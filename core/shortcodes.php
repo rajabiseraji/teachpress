@@ -229,6 +229,8 @@ class TP_Shortcodes {
             // Set the label for each select option
             if ( $key === 'type' ) {
                 $text = tp_translate_pub_type($row['type'], 'pl');
+                if (str_contains($text, 'Inproceedings'))
+                    $text = str_replace('Inproceedings', 'Conference Proceedings', $text);
             }
             else if ( $key === 'author' ) {
                 $text = TP_Bibtex::parse_author($row['name'], '', $atts['author_name']);
@@ -327,6 +329,8 @@ class TP_Shortcodes {
             // Set the label for each select option
             if ( $key === 'type' ) {
                 $text = tp_translate_pub_type($row['type'], 'pl');
+                if (str_contains($text, 'Inproceedings'))
+                    $text = str_replace('Inproceedings', 'Conference Proceedings', $text);
             }
             else if ( $key === 'author' ) {
                 $text = TP_Bibtex::parse_author($row['name'], '', $atts['author_name']);
