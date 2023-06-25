@@ -108,3 +108,7 @@ function teachpress_validateForm() {
     document.teachpress_returnValue = (errors === '');
   }
 }
+
+jQuery(document).ready(function() {
+    window.scrollTo(0, 0);
+});
