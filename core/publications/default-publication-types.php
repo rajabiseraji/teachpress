@@ -117,7 +117,7 @@ function tp_register_all_publication_types() {
             'i18n_singular'     => __('Proceedings Article','teachpress'),
             'i18n_plural'       => __('Proceedings Articles','teachpress'),
             'default_fields'    => array('booktitle', 'volume', 'number', 'pages', 'publisher', 'address', 'organization', 'series'),   
-            'html_meta_row'     => '{IN}{editor}{booktitle}{pages}{organization}{publisher}{address}{year}{isbn}{note}' 
+            'html_meta_row'     => '{IN}{editor}{booktitle}{organization}{series}{publisher}{address}{pages}{note}' 
         ) );
     
     // Manual
