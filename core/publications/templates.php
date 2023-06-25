@@ -395,13 +395,14 @@ class TP_HTML_Publication_Template {
         $settings = array(
             'name'                  => '',
             'description'           => '',
-            'author'                => '',
+            'author'                => ' ',
             'version'               => '0.0',
             'button_separator'      => ' | ',
             'menu_label_tags'       => __('Tags') . ': ',
             'menu_label_links'      => __('Links','teachpress') . ': ',
-            'meta_label_in'         => __('In','teachpress') . ': ',
-            'citation_style'        => 'teachPress'
+            'meta_label_in'         => __('In','teachpress') . ' ',
+            'citation_style'        => 'teachPress',
+            'link_style'            => 'direct'
         );
         // overwrite defaults
         if ( method_exists($template, 'get_settings') ) {
@@ -448,10 +449,10 @@ class TP_HTML_Publication_Template {
 
         // parse author names for teachPress style
         if ( $row['type'] === 'collection' || $row['type'] === 'periodical' || ( $row['author'] === '' && $row['editor'] !== '' ) ) {
-            $all_authors = TP_Bibtex::parse_author($row['editor'], $settings['author_separator'], $settings['author_name'] ) . ' (' . __('Ed.','teachpress') . ')';
+            $all_authors = TP_Bibtex::parse_author($row['editor'], $settings['author_separator'], 'simple' ) . ' (' . __('Ed.','teachpress') . ')';
         }
         else {
-            $all_authors = TP_Bibtex::parse_author($row['author'], $settings['author_separator'], $settings['author_name'] );
+            $all_authors = TP_Bibtex::parse_author($row['author'], $settings['author_separator'], 'simple' );
         }
 
         // if the publication has a doi -> altmetric
@@ -479,13 +480,13 @@ class TP_HTML_Publication_Template {
         }
 
         // if there are links
-        if ( $row['url'] != '' || $row['doi'] != '' ) {
+        if ($row['url'] != '' && !str_contains($row['url'], 'doi')) {
             if ( $settings['link_style'] === 'inline' || $settings['link_style'] === 'direct' ) {
                 $url = self::get_info_button(__('Links','teachpress'), __('Show links and resources','teachpress'), 'links', $container_id) . $separator;
                 $is_button = true;
             }
             else {
-                $url = '<span class="tp_resource_link">' . $separator . '<span class="tp_pub_links_label">' . $template_settings['menu_label_links'] . '</span>' . self::prepare_url($row['url'], $row['doi'], 'enumeration') . '</span>';
+                $url = '<span class="tp_resource_link">' . $separator . '<span class="tp_pub_links_label">' . $template_settings['menu_label_links'] . '</span>' . self::prepare_url($row['url'], '', 'enumeration') . '</span>';
             }
         }
 
@@ -575,7 +576,7 @@ class TP_HTML_Publication_Template {
 
         // isset() doesn't work for $editor
         $editor = ( $row['editor'] != '' ) ? TP_Bibtex::parse_author($row['editor'], $settings['editor_separator'], $settings['editor_name']) . ' (' . __('Ed.','teachpress') . '): ' : '';
-        $pages = isset( $row['pages'] ) ? TP_HTML_Publication_Template::prepare_field('pages', TP_Bibtex::prepare_page_number($row['pages']) , __('pp.','teachpress') . ' ',', ', $use_span) : '';
+        $pages = isset( $row['pages'] ) ? TP_HTML_Publication_Template::prepare_field('pages', TP_Bibtex::prepare_page_number($row['pages']) , __('','teachpress') . ' ',', ', $use_span) : '';
         $booktitle = isset( $row['booktitle'] ) ? TP_HTML_Publication_Template::prepare_field('booktitle', $row['booktitle'],'',', ',$use_span) : '';
         $issuetitle = isset( $row['issuetitle'] ) ? TP_HTML_Publication_Template::prepare_field('issuetitle', $row['issuetitle'],'',', ',$use_span) : '';
         $journal = isset( $row['journal'] ) ? TP_HTML_Publication_Template::prepare_field('journal', $row['journal'],'',', ',$use_span) : '';
